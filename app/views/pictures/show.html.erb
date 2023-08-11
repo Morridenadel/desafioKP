@@ -1,0 +1,41 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @picture %>
+
+<div>
+  <%= link_to "Edit this picture", edit_picture_path(@picture) %> |
+  <%= link_to "Back to pictures", pictures_path %>
+
+  <%= button_to "Destroy this picture", @picture, method: :delete %>
+</div>
+
+<ul>
+  <% @picture.comments.each do |c| %>
+    <li><%= image_tag c.user.image, width: 50, height: 50 %> - <%= c.content %></li>
+  <% end %>
+</ul>
+
+
+<%= form_with(model: @comment, local: true) do |f| %>
+  <% if @comment.errors.any? %>
+    <div id = 'error_explanation'>
+      <h2>Este Comentario no se pudo crear por las siguientes razones</h2>
+      <ul>
+        <% @comment.errors.full_messages.each do |msg|%>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :picture_id, value: @picture.id %>
+
+  <div>
+    <%= f.label :content %>
+    <%= f.text_field :content %>
+  </div>
+
+  <div class = 'actions'>
+    <%= f.submit %>
+  </div>
+<% end %>
